@@ -1586,7 +1586,9 @@ void kick_all_tcp_devices() {
     }
     reconnect_handler.CheckForKicked();
 }
+#endif
 
+#if ADB_HOST || LEGACY_FFS
 void register_usb_transport(std::shared_ptr<Connection> connection, const char* serial,
                             const char* devpath, unsigned writeable) {
     atransport* t = new atransport(writeable ? kCsOffline : kCsNoPerm);
@@ -1638,6 +1640,7 @@ void unregister_usb_transport(usb_handle* usb) {
     });
 }
 
+#if ADB_HOST
 // Track reverse:forward commands, so that info can be used to develop
 // an 'allow-list':
 //   - adb reverse tcp:<device_port> localhost:<host_port> : responds with the
@@ -1693,7 +1696,7 @@ bool atransport::IsReverseConfigured(const std::string& local_addr) {
     }
     return false;
 }
-
+#endif
 #endif
 
 bool check_header(apacket* p, atransport* t) {
